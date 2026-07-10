@@ -1,0 +1,18 @@
+# Default runtime profile (overridden by env / .env)
+mode: paper
+symbols: [BTC, ETH, SOL, BNB, DOGE, NEAR]
+risk:
+  half_kelly: true
+  max_daily_loss_pct: 0.02
+  max_consecutive_losses: 5
+  edge_threshold: 0.05
+  min_orderbook_liquidity_usd: 50000
+  max_position_pct: 0.05
+simulation:
+  mc_simulations: 10000
+  mirofish_agents: 200
+go_live_checklist:
+  min_paper_days: 7
+  min_trades: 200
+  min_win_rate: 0.75
+  max_crashes: 0

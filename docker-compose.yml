@@ -1,0 +1,25 @@
+# Trade-coin-2026 online stack
+# Usage:
+#   cp .env.example .env
+#   docker compose up -d --build
+#   open http://localhost:8080
+
+services:
+  trade-coin:
+    build: .
+    container_name: trade-coin-2026
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    env_file:
+      - .env
+    environment:
+      WEB_HOST: "0.0.0.0"
+      WEB_PORT: "8080"
+      DATA_DIR: /app/data
+      # set AUTO_START_BOT=true in .env to auto-run trading loop
+    volumes:
+      - trade_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  trade_data:

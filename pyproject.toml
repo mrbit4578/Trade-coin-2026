@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trade-coin-2026"
+version = "1.1.0"
+description = "Trade-coin-2026: multi-exchange crypto bot, Monte Carlo, web dashboard, Telegram/WhatsApp automation, Binance/MEXC paper-first trading"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "aiohttp>=3.9.0",
+  "websockets>=12.0",
+  "numpy>=1.26.0",
+  "pandas>=2.1.0",
+  "pydantic>=2.5.0",
+  "pydantic-settings>=2.1.0",
+  "python-dotenv>=1.0.0",
+  "httpx>=0.27.0",
+  "orjson>=3.9.0",
+  "rich>=13.7.0",
+  "typer>=0.12.0",
+  "networkx>=3.2",
+  "scipy>=1.11.0",
+  "tenacity>=8.2.0",
+  "fastapi>=0.110.0",
+  "uvicorn[standard]>=0.27.0",
+  "jinja2>=3.1.0",
+  "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "pytest-asyncio>=0.23.0"]
+ai = ["anthropic>=0.40.0", "openai>=1.40.0"]
+
+[project.scripts]
+crypto-edge = "crypto_edge.cli:app"
+trade-coin = "crypto_edge.cli:app"
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

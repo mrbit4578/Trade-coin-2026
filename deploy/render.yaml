@@ -1,0 +1,14 @@
+# Optional Render.com blueprint
+services:
+  - type: web
+    name: trade-coin-2026
+    env: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: MODE
+        value: paper
+      - key: TRADE_VENUE
+        value: paper
+      - key: WEB_PORT
+        value: 8080

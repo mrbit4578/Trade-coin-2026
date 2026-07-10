@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trade-coin-2026 Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Trade-coin-2026</h1>
+      <p class="sub">Crypto Edge Agent · Web · Bot · Telegram · WhatsApp</p>
+    </div>
+    <div class="badges">
+      <span class="badge" id="badge-run">—</span>
+      <span class="badge">v{{ version }}</span>
+      <span class="badge">{{ mode }} / {{ venue }}</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <h2>Bot control</h2>
+      <div class="row">
+        <button id="btn-start" class="btn primary">▶ Start bot</button>
+        <button id="btn-stop" class="btn danger">■ Stop</button>
+        <button id="btn-once" class="btn">⚡ Scan once</button>
+        <button id="btn-refresh" class="btn">↻ Refresh</button>
+      </div>
+      <pre id="status-box" class="mono">Loading…</pre>
+    </section>
+
+    <section class="card">
+      <h2>Live prices (Binance)</h2>
+      <div id="prices" class="prices">—</div>
+    </section>
+
+    <section class="card">
+      <h2>Last signals</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Action</th><th>Sym</th><th>Side</th><th>Edge</th><th>Size</th><th>Note</th></tr>
+          </thead>
+          <tbody id="signals-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Notify test</h2>
+      <textarea id="notify-text" rows="3" placeholder="Nội dung test Telegram / WhatsApp…">Bot online — Trade-coin-2026</textarea>
+      <div class="row">
+        <button id="btn-tg" class="btn">Send Telegram</button>
+        <button id="btn-wa" class="btn">Send WhatsApp</button>
+        <button id="btn-both" class="btn primary">Send both</button>
+      </div>
+      <pre id="notify-result" class="mono"></pre>
+    </section>
+
+    <section class="card wide">
+      <h2>Pipeline</h2>
+      <ol class="steps">
+        <li>Multi-exchange feeds (Binance + Coinbase + Bybit)</li>
+        <li>Orderbook depth proxy + OTC overlay</li>
+        <li>SMC structure (BOS/CHoCH/stop-hunt)</li>
+        <li>Monte Carlo 10,000 paths + MiroFish graph</li>
+        <li>Edge ≥ 5% → half-Kelly × Bayesian size</li>
+        <li>Paper / Binance / MEXC execution + Telegram & WhatsApp</li>
+      </ol>
+      <p class="muted">Paper mặc định. Live cần MODE=live + LIVE_CONFIRM=true + API keys. Không phải lời khuyên tài chính.</p>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
