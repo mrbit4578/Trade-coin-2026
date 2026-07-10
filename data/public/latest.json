@@ -1,46 +1,73 @@
 {
-  "updated_at": "2026-07-10T06:10:45.710718+00:00",
+  "updated_at": "2026-07-10T10:01:14.502906+00:00",
   "mode": "paper-cloud",
   "venue": "paper",
   "mc_simulations": 1500,
   "prices": {
-    "BTC": 64019.87333333,
-    "ETH": 1777.12333333,
-    "SOL": 79.13333333,
-    "BNB": 576.81666667,
-    "DOGE": 0.07418667,
-    "NEAR": 1.941
+    "BTC": 64338.88,
+    "ETH": 1791.26,
+    "SOL": 79.16,
+    "BNB": 576.48,
+    "DOGE": 0.07434,
+    "NEAR": 1.944
   },
   "signals": [
     {
-      "action": "ENTER",
+      "action": "SKIP",
+      "symbol": "BTC",
+      "side": "BUY",
+      "edge": 0.0896,
+      "size_usd": 0.0,
+      "skip_reason": "thin liquidity $0",
+      "question": "spot BTC/USDT"
+    },
+    {
+      "action": "SKIP",
       "symbol": "ETH",
       "side": "BUY",
-      "edge": 0.1794,
-      "size_usd": 30.99,
-      "skip_reason": "",
+      "edge": 0.0717,
+      "size_usd": 0.0,
+      "skip_reason": "thin liquidity $0",
       "question": "spot ETH/USDT"
     },
     {
-      "action": "ENTER",
+      "action": "SKIP",
+      "symbol": "SOL",
+      "side": "BUY",
+      "edge": 0.1035,
+      "size_usd": 0.0,
+      "skip_reason": "thin liquidity $0",
+      "question": "spot SOL/USDT"
+    },
+    {
+      "action": "SKIP",
       "symbol": "BNB",
       "side": "BUY",
-      "edge": 0.0551,
-      "size_usd": 18.54,
-      "skip_reason": "",
+      "edge": 0.0658,
+      "size_usd": 0.0,
+      "skip_reason": "thin liquidity $0",
       "question": "spot BNB/USDT"
     },
     {
-      "action": "ENTER",
+      "action": "SKIP",
+      "symbol": "DOGE",
+      "side": "BUY",
+      "edge": 0.0974,
+      "size_usd": 0.0,
+      "skip_reason": "thin liquidity $0",
+      "question": "spot DOGE/USDT"
+    },
+    {
+      "action": "SKIP",
       "symbol": "NEAR",
       "side": "BUY",
-      "edge": 0.1036,
-      "size_usd": 30.99,
-      "skip_reason": "",
+      "edge": 0.076,
+      "size_usd": 0.0,
+      "skip_reason": "thin liquidity $0",
       "question": "spot NEAR/USDT"
     }
   ],
-  "enter_count": 3,
+  "enter_count": 0,
   "cycles": 1,
   "source": "github-actions"
 }
