@@ -106,3 +106,35 @@ textarea {
 .muted { color: var(--muted); font-size: 0.85rem; }
 .enter { color: var(--good); font-weight: 700; }
 .skip { color: var(--warn); }
+.banner {
+  margin: 0.75rem 1.5rem 0;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #1d4ed8;
+  background: linear-gradient(90deg, #122a55, #0f1a30);
+  color: #cfe0ff;
+  font-size: 0.9rem;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+}
+.stat {
+  background: #0f172a;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.45rem 0.55rem;
+}
+.stat b { display: block; color: var(--muted); font-size: 0.7rem; }
+.stat span { font-weight: 700; font-variant-numeric: tabular-nums; }
+code {
+  background: #0a101c;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  font-size: 0.85em;
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}

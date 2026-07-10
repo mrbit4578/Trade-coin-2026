@@ -8,12 +8,37 @@ async function api(path, opts = {}) {
   return data;
 }
 
+function fmtPrice(n) {
+  const x = Number(n);
+  if (!Number.isFinite(x)) return "—";
+  return x.toLocaleString(undefined, { maximumFractionDigits: 6 });
+}
+
 function renderStatus(s) {
-  const box = document.getElementById("status-box");
   const badge = document.getElementById("badge-run");
   badge.textContent = s.running ? "RUNNING" : "STOPPED";
   badge.className = "badge " + (s.running ? "on" : "off");
-  box.textContent = JSON.stringify(s, null, 2);
+
+  document.getElementById("st-cycles").textContent = s.cycles ?? 0;
+  document.getElementById("st-enter").textContent = s.enter_count ?? 0;
+  document.getElementById("st-skip").textContent = s.skip_count ?? 0;
+  document.getElementById("st-equity").textContent =
+    s.equity != null ? "$" + Number(s.equity).toFixed(2) : "—";
+
+  const compact = {
+    running: s.running,
+    started_at: s.started_at,
+    cycles: s.cycles,
+    mode: s.mode,
+    venue: s.venue,
+    equity: s.equity,
+    enter_count: s.enter_count,
+    skip_count: s.skip_count,
+    last_error: s.last_error,
+    cooldown_sec: s.trade_cooldown_sec,
+    scan_interval_sec: s.scan_interval_sec,
+  };
+  document.getElementById("status-box").textContent = JSON.stringify(compact, null, 2);
 
   const tbody = document.getElementById("signals-body");
   tbody.innerHTML = "";
@@ -28,28 +53,70 @@ function renderStatus(s) {
       <td>${(row.skip_reason || row.question || "").slice(0, 48)}</td>`;
     tbody.appendChild(tr);
   });
+
+  // prices from status cache
+  if (s.live_prices && Object.keys(s.live_prices).length) {
+    renderPrices(s.live_prices, "hub-cache");
+  }
+
+  // activity
+  const act = (s.activity || [])
+    .slice(0, 30)
+    .map((a) => `${(a.ts || "").slice(11, 19)} [${a.kind}] ${a.message}`)
+    .join("\n");
+  document.getElementById("activity-box").textContent = act || "Chưa có activity…";
+}
+
+function renderPrices(prices, source) {
+  const el = document.getElementById("prices");
+  el.innerHTML = Object.entries(prices)
+    .map(([sym, v]) => {
+      const px = typeof v === "object" ? v.price : v;
+      return `<div class="price-chip"><b>${sym}</b><span>${fmtPrice(px)}</span></div>`;
+    })
+    .join("");
+  document.getElementById("price-src").textContent = source
+    ? "Nguồn: " + source + " · tự refresh"
+    : "";
+}
+
+async function refreshTrades() {
+  try {
+    const t = await api("/api/trades");
+    const body = document.getElementById("trades-body");
+    body.innerHTML = "";
+    (t.trades || [])
+      .slice()
+      .reverse()
+      .slice(0, 25)
+      .forEach((row) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${(row.id || "").toString().slice(0, 8)}</td>
+          <td>${row.symbol || ""}</td>
+          <td>${row.side || ""}</td>
+          <td>${row.size_usd != null ? "$" + row.size_usd : "-"}</td>
+          <td>${row.edge != null ? Number(row.edge).toFixed(3) : "-"}</td>
+          <td>${row.mode || ""}</td>`;
+        body.appendChild(tr);
+      });
+  } catch (e) {
+    /* ignore */
+  }
 }
 
 async function refresh() {
-  const s = await api("/api/status");
-  renderStatus(s);
   try {
-    const p = await api("/api/prices");
-    const el = document.getElementById("prices");
-    if (!p.ok) {
-      el.textContent = p.error || "price error";
-      return;
+    const s = await api("/api/status");
+    renderStatus(s);
+    // if no cache yet, hit prices endpoint
+    if (!s.live_prices || !Object.keys(s.live_prices).length) {
+      const p = await api("/api/prices");
+      if (p.ok) renderPrices(p.prices, p.source || "rest");
     }
-    el.innerHTML = Object.entries(p.prices)
-      .map(
-        ([sym, v]) =>
-          `<div class="price-chip"><b>${sym}</b><span>${Number(v.price).toLocaleString(undefined, {
-            maximumFractionDigits: 6,
-          })}</span></div>`
-      )
-      .join("");
+    await refreshTrades();
   } catch (e) {
-    document.getElementById("prices").textContent = String(e.message || e);
+    document.getElementById("status-box").textContent = String(e.message || e);
   }
 }
 
@@ -81,4 +148,5 @@ document.getElementById("btn-wa").onclick = () => notify(["whatsapp"]);
 document.getElementById("btn-both").onclick = () => notify(["telegram", "whatsapp"]);
 
 refresh();
-setInterval(refresh, 15000);
+// Hot refresh every 5s — web is the control plane
+setInterval(refresh, 5000);

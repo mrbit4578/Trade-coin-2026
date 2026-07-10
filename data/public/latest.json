@@ -1,0 +1,46 @@
+{
+  "updated_at": "2026-07-10T06:10:45.710718+00:00",
+  "mode": "paper-cloud",
+  "venue": "paper",
+  "mc_simulations": 1500,
+  "prices": {
+    "BTC": 64019.87333333,
+    "ETH": 1777.12333333,
+    "SOL": 79.13333333,
+    "BNB": 576.81666667,
+    "DOGE": 0.07418667,
+    "NEAR": 1.941
+  },
+  "signals": [
+    {
+      "action": "ENTER",
+      "symbol": "ETH",
+      "side": "BUY",
+      "edge": 0.1794,
+      "size_usd": 30.99,
+      "skip_reason": "",
+      "question": "spot ETH/USDT"
+    },
+    {
+      "action": "ENTER",
+      "symbol": "BNB",
+      "side": "BUY",
+      "edge": 0.0551,
+      "size_usd": 18.54,
+      "skip_reason": "",
+      "question": "spot BNB/USDT"
+    },
+    {
+      "action": "ENTER",
+      "symbol": "NEAR",
+      "side": "BUY",
+      "edge": 0.1036,
+      "size_usd": 30.99,
+      "skip_reason": "",
+      "question": "spot NEAR/USDT"
+    }
+  ],
+  "enter_count": 3,
+  "cycles": 1,
+  "source": "github-actions"
+}

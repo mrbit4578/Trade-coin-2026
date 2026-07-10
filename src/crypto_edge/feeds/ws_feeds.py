@@ -53,7 +53,9 @@ class BinanceWS:
         url = self._url()
         while not self._stop.is_set():
             try:
-                async with websockets.connect(url, ping_interval=20) as ws:
+                async with websockets.connect(
+                    url, ping_interval=20, max_size=8 * 1024 * 1024
+                ) as ws:
                     log.info("Binance WS connected (%d symbols)", len(self.symbols))
                     async for raw in ws:
                         if self._stop.is_set():
@@ -112,17 +114,20 @@ class CoinbaseWS:
         self._books: dict[str, dict] = {}
 
     async def run(self) -> None:
+        # ticker only — level2_batch snapshots exceed default 1MB WS frame limit
         url = "wss://ws-feed.exchange.coinbase.com"
         while not self._stop.is_set():
             try:
-                async with websockets.connect(url, ping_interval=20) as ws:
+                async with websockets.connect(
+                    url, ping_interval=20, max_size=8 * 1024 * 1024
+                ) as ws:
                     sub = {
                         "type": "subscribe",
                         "product_ids": self.products,
-                        "channels": ["ticker", "level2_batch"],
+                        "channels": ["ticker"],
                     }
                     await ws.send(orjson.dumps(sub).decode())
-                    log.info("Coinbase WS connected")
+                    log.info("Coinbase WS connected (ticker-only)")
                     async for raw in ws:
                         if self._stop.is_set():
                             break
@@ -198,7 +203,9 @@ class BybitWS:
         url = "wss://stream.bybit.com/v5/public/spot"
         while not self._stop.is_set():
             try:
-                async with websockets.connect(url, ping_interval=20) as ws:
+                async with websockets.connect(
+                    url, ping_interval=20, max_size=8 * 1024 * 1024
+                ) as ws:
                     args = [f"tickers.{s}" for s in self.symbols] + [
                         f"orderbook.50.{s}" for s in self.symbols
                     ]

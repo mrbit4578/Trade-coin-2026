@@ -85,14 +85,18 @@ class Settings(BaseSettings):
     otc_simulate: bool = True
 
     scan_interval_sec: float = 15.0
+    # Minimum seconds between ENTER on same symbol (web auto mode)
+    trade_cooldown_sec: float = 300.0
     log_level: str = "INFO"
     data_dir: str = "data"
 
-    # Web dashboard
+    # Web dashboard — auto-run bot when web starts (no PowerShell needed)
     web_host: str = "0.0.0.0"
     web_port: int = 8080
     web_api_token: str = ""  # optional Bearer token for /api/*
-    auto_start_bot: bool = False
+    auto_start_bot: bool = True
+    # Use websockets inside web bot (Binance+Bybit; Coinbase ticker-only)
+    web_use_websockets: bool = True
 
     @field_validator("mode", "trade_venue", mode="before")
     @classmethod

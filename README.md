@@ -25,29 +25,38 @@
 
 ---
 
-## Quick start
+## Cách dùng khuyến nghị: **GitHub Pages (không PowerShell)**
+
+1. Bật **Settings → Pages → Source = GitHub Actions** trên repo  
+2. Chạy workflow **Deploy GitHub Pages**  
+3. Mở: **https://mrbit4578.github.io/Trade-coin-2026/**  
+
+- Giá **real-time** chạy trong trình duyệt (API công khai)  
+- Bot paper cloud: workflow **Cloud paper bot** (mỗi 30 phút → `data/public/latest.json`)  
+- Máy bạn **không** cần Python / uvicorn / PowerShell  
+
+Chi tiết: [docs/GITHUB-PAGES.md](docs/GITHUB-PAGES.md)
+
+### Local (tuỳ chọn)
+
+**Web tĩnh siêu nhẹ** (không cài bot):
+
+```bash
+cd web && python -m http.server 5500
+# http://127.0.0.1:5500
+```
+
+**Full bot + FastAPI** (nặng hơn, paper/live):
 
 ```bash
 git clone https://github.com/mrbit4578/Trade-coin-2026.git
 cd Trade-coin-2026
 python -m venv .venv
-
-# Windows
-.\.venv\Scripts\activate
-# Linux/macOS
-# source .venv/bin/activate
-
-pip install -U pip
-pip install -r requirements.txt
-pip install -e .
-cp .env.example .env   # Windows: copy .env.example .env
-
-python -m crypto_edge.cli install-check
-python -m crypto_edge.cli once
-python -m crypto_edge.cli web
+# Windows: .\.venv\Scripts\activate
+pip install -r requirements.txt && pip install -e .
+cp .env.example .env
+python -m crypto_edge.cli web   # http://127.0.0.1:8080
 ```
-
-Open **http://127.0.0.1:8080**
 
 ### Docker
 

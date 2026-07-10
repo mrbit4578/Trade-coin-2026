@@ -68,6 +68,7 @@ class EdgeAgent:
         self.notify = MultiNotifier(self.settings)
         self._markets_cache = []
         self._cycles = 0
+        self._last_entry_ts: dict[str, float] = {}
 
     @property
     def use_spot(self) -> bool:
@@ -230,6 +231,28 @@ class EdgeAgent:
                 bayesian_win_rate=self.bayes.mean,
             )
 
+        # Cooldown: avoid ENTER spam every scan cycle on same symbol
+        import time
+
+        now = time.time()
+        last = self._last_entry_ts.get(sym, 0.0)
+        cd = float(self.settings.trade_cooldown_sec or 0)
+        if cd > 0 and now - last < cd:
+            remain = int(cd - (now - last))
+            return TradeSignal(
+                action=SignalAction.SKIP,
+                symbol=sym,
+                market_question=f"spot {sym}/USDT",
+                side=side,
+                edge=edge,
+                fair_prob=mc.p_up if side == Side.BUY else mc.p_down,
+                market_prob=0.5,
+                skip_reason=f"cooldown {remain}s",
+                mc=mc,
+                structure=structure,
+                bayesian_win_rate=self.bayes.mean,
+            )
+
         win_p = mc.p_up if side == Side.BUY else mc.p_down
         win_p = 0.7 * win_p + 0.3 * self.bayes.mean
         # assume ~1:1 RR for spot short-horizon
@@ -300,6 +323,7 @@ class EdgeAgent:
             sig.skip_reason = f"exec error: {e}"
             return sig
 
+        self._last_entry_ts[sym] = time.time()
         await self.notify.trade_alert(
             {
                 "action": "ENTER",

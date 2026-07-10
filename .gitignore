@@ -10,6 +10,8 @@ data/paper_trades/*.jsonl
 data/logs/*
 !data/logs/.gitkeep
 !data/paper_trades/.gitkeep
+!data/public/
+!data/public/**
 *.log
 .DS_Store
 dist/

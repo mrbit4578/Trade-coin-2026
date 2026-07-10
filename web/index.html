@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Trade-coin-2026 — live crypto dashboard on GitHub Pages" />
+  <title>Trade-coin-2026 · Live Web</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>" />
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Trade-coin-2026</h1>
+      <p class="sub">Live data · Web only · Không cần PowerShell · Host trên GitHub Pages</p>
+    </div>
+    <div class="badges">
+      <span class="badge on" id="badge-live">LIVE</span>
+      <span class="badge" id="badge-src">—</span>
+      <span class="badge" id="badge-clock">—</span>
+    </div>
+  </header>
+
+  <div class="banner">
+    Dữ liệu giá thời gian thực từ API công khai · Tín hiệu bot paper từ GitHub Actions ·
+    Máy bạn chỉ mở trình duyệt, không chạy Python nặng.
+  </div>
+
+  <main class="grid">
+    <section class="card wide">
+      <div class="row between">
+        <h2>Giá real-time</h2>
+        <div class="row">
+          <button class="btn" id="btn-refresh">↻ Refresh</button>
+          <label class="toggle"><input type="checkbox" id="auto-refresh" checked /> Auto 8s</label>
+        </div>
+      </div>
+      <div id="prices" class="prices">Đang tải…</div>
+    </section>
+
+    <section class="card">
+      <h2>Tín hiệu engine (trình duyệt)</h2>
+      <p class="muted">Monte Carlo nhẹ + structure client-side · paper only</p>
+      <div class="stats">
+        <div class="stat"><b>Signals</b><span id="st-sig">0</span></div>
+        <div class="stat"><b>Last run</b><span id="st-run">—</span></div>
+        <div class="stat"><b>Mode</b><span>paper-web</span></div>
+      </div>
+      <button class="btn primary" id="btn-scan">⚡ Scan signals</button>
+      <div class="table-wrap" style="margin-top:.75rem">
+        <table>
+          <thead><tr><th>Action</th><th>Sym</th><th>Side</th><th>Edge</th><th>Note</th></tr></thead>
+          <tbody id="sig-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Bot cloud (GitHub Actions)</h2>
+      <p class="muted">File <code>data/public/latest.json</code> cập nhật theo lịch CI</p>
+      <pre id="cloud-box" class="mono">Đang tải latest.json…</pre>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sym</th><th>Side</th><th>Edge</th><th>Size</th><th>Action</th></tr></thead>
+          <tbody id="cloud-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Paper ledger (localStorage)</h2>
+      <div class="row">
+        <button class="btn" id="btn-clear">Xóa ledger</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Time</th><th>Sym</th><th>Side</th><th>Edge</th><th>Price</th></tr></thead>
+          <tbody id="ledger-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Mapping pipeline</h2>
+      <ol class="steps">
+        <li><b>Browser</b> ← API giá (CryptoCompare / CoinGecko)</li>
+        <li><b>Client engine</b> → edge / BUY·SELL paper</li>
+        <li><b>GitHub Actions</b> → scan định kỳ → <code>latest.json</code></li>
+        <li><b>GitHub Pages</b> → host web tĩnh 24/7 miễn phí</li>
+      </ol>
+      <p class="muted">Không chạy uvicorn/PowerShell trên máy bạn. Live trade sàn cần API key riêng (không lưu secret trên Pages).</p>
+    </section>
+
+    <section class="card wide">
+      <h2>Activity</h2>
+      <pre id="activity" class="mono">—</pre>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <a href="https://github.com/mrbit4578/Trade-coin-2026" target="_blank" rel="noopener">GitHub · mrbit4578/Trade-coin-2026</a>
+    · Paper only · Not financial advice
+  </footer>
+
+  <script src="assets/engine.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

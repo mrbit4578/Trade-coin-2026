@@ -1,9 +1,11 @@
 """
-FastAPI web app — online dashboard + bot control + alerts.
+FastAPI web app — full auto mode.
 
-Run:
-  python -m crypto_edge.cli web
-  # or: uvicorn crypto_edge.web.app:app --host 0.0.0.0 --port 8080
+Opening the dashboard:
+  - auto-starts bot (AUTO_START_BOT=true default)
+  - loads market data in background
+  - streams status/prices/activity to browser
+  - no PowerShell needed after `python -m crypto_edge.cli web`
 """
 
 from __future__ import annotations
@@ -47,9 +49,29 @@ async def lifespan(app: FastAPI):
         level=getattr(logging, settings.log_level.upper(), logging.INFO),
         format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
     )
-    log.info("Trade-coin-2026 web v%s starting", __version__)
+    log.info(
+        "Trade-coin-2026 web v%s | auto_start=%s | port=%s",
+        __version__,
+        settings.auto_start_bot,
+        settings.web_port,
+    )
+    # Always warm REST prices for dashboard even before bot starts
+    try:
+        ticks = await fetch_binance_tickers(settings.symbol_list)
+        for t in ticks:
+            bot_service.live_prices[t.symbol] = {
+                "price": t.price,
+                "bid": t.bid,
+                "ask": t.ask,
+                "source": "boot-rest",
+            }
+        log.info("Boot prices: %s", {t.symbol: t.price for t in ticks})
+    except Exception as e:
+        log.warning("Boot price warm-up failed: %s", e)
+
     if settings.auto_start_bot:
-        await bot_service.start(use_ws=True)
+        result = await bot_service.start(use_ws=settings.web_use_websockets)
+        log.info("Auto-start bot: %s", result.get("ok"))
     yield
     if bot_service.running:
         await bot_service.stop()
@@ -57,7 +79,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Trade-coin-2026",
-    description="Crypto edge agent — web dashboard, bot trade, Telegram & WhatsApp",
+    description="Crypto edge agent — web auto bot, Telegram & WhatsApp",
     version=__version__,
     lifespan=lifespan,
 )
@@ -71,20 +93,26 @@ app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 async def home(request: Request):
     s = reload_settings()
     return templates.TemplateResponse(
+        request,
         "index.html",
         {
-            "request": request,
             "version": __version__,
             "status": bot_service.status(),
             "venue": s.trade_venue,
             "mode": s.mode,
+            "auto_start": s.auto_start_bot,
         },
     )
 
 
 @app.get("/health")
 async def health():
-    return {"ok": True, "version": __version__, "running": bot_service.running}
+    return {
+        "ok": True,
+        "version": __version__,
+        "running": bot_service.running,
+        "cycles": bot_service.cycles,
+    }
 
 
 @app.get("/api/status")
@@ -94,7 +122,8 @@ async def api_status(_: None = Depends(_auth)):
 
 @app.post("/api/bot/start")
 async def api_bot_start(_: None = Depends(_auth)):
-    return await bot_service.start(use_ws=True)
+    s = reload_settings()
+    return await bot_service.start(use_ws=s.web_use_websockets)
 
 
 @app.post("/api/bot/stop")
@@ -109,24 +138,32 @@ async def api_bot_once(_: None = Depends(_auth)):
 
 @app.get("/api/prices")
 async def api_prices(_: None = Depends(_auth)):
+    """Prefer live hub cache from running bot; fallback REST."""
+    cached = bot_service.live_prices
+    if cached:
+        return {"ok": True, "source": "cache", "prices": cached}
     s = reload_settings()
     try:
         ticks = await fetch_binance_tickers(s.symbol_list)
-        return {
-            "ok": True,
-            "prices": {
-                t.symbol: {
-                    "price": t.price,
-                    "bid": t.bid,
-                    "ask": t.ask,
-                    "volume_24h": t.volume_24h,
-                    "exchange": t.exchange,
-                }
-                for t in ticks
-            },
+        prices = {
+            t.symbol: {
+                "price": t.price,
+                "bid": t.bid,
+                "ask": t.ask,
+                "volume_24h": t.volume_24h,
+                "exchange": t.exchange,
+            }
+            for t in ticks
         }
+        bot_service.live_prices.update(prices)
+        return {"ok": True, "source": "rest", "prices": prices}
     except Exception as e:
         return JSONResponse({"ok": False, "error": str(e)}, status_code=502)
+
+
+@app.get("/api/activity")
+async def api_activity(_: None = Depends(_auth)):
+    return {"ok": True, "activity": list(bot_service.activity)[:80]}
 
 
 @app.get("/api/history")
@@ -166,7 +203,6 @@ async def api_notify_test(body: NotifyBody, _: None = Depends(_auth)):
 
 @app.get("/api/config")
 async def api_config(_: None = Depends(_auth)):
-    """Public-safe config (no secrets)."""
     s = reload_settings()
     return {
         "mode": s.mode,
@@ -181,6 +217,8 @@ async def api_config(_: None = Depends(_auth)):
         "binance_testnet": s.binance_testnet,
         "live_allowed": s.is_live_allowed(),
         "scan_interval_sec": s.scan_interval_sec,
+        "trade_cooldown_sec": s.trade_cooldown_sec,
+        "auto_start_bot": s.auto_start_bot,
         "telegram_configured": bool(s.telegram_bot_token and s.telegram_chat_id),
         "whatsapp_provider": s.whatsapp_provider,
         "whatsapp_configured": s.whatsapp_provider != "none",

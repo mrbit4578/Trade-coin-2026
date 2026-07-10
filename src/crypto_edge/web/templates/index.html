@@ -10,30 +10,42 @@
   <header class="top">
     <div>
       <h1>Trade-coin-2026</h1>
-      <p class="sub">Crypto Edge Agent · Web · Bot · Telegram · WhatsApp</p>
+      <p class="sub">Web auto · Bot trade · Live data · Telegram · WhatsApp</p>
     </div>
     <div class="badges">
       <span class="badge" id="badge-run">—</span>
+      <span class="badge" id="badge-auto">{% if auto_start %}AUTO-ON{% else %}AUTO-OFF{% endif %}</span>
       <span class="badge">v{{ version }}</span>
       <span class="badge">{{ mode }} / {{ venue }}</span>
     </div>
   </header>
 
+  <div class="banner" id="banner">
+    Bot tự chạy trên web — không cần PowerShell load data. Chỉ cần mở trang này.
+  </div>
+
   <main class="grid">
     <section class="card">
       <h2>Bot control</h2>
       <div class="row">
-        <button id="btn-start" class="btn primary">▶ Start bot</button>
+        <button id="btn-start" class="btn primary">▶ Start</button>
         <button id="btn-stop" class="btn danger">■ Stop</button>
         <button id="btn-once" class="btn">⚡ Scan once</button>
         <button id="btn-refresh" class="btn">↻ Refresh</button>
+      </div>
+      <div class="stats" id="stats">
+        <div class="stat"><b>Cycles</b><span id="st-cycles">0</span></div>
+        <div class="stat"><b>ENTER</b><span id="st-enter">0</span></div>
+        <div class="stat"><b>SKIP</b><span id="st-skip">0</span></div>
+        <div class="stat"><b>Equity</b><span id="st-equity">—</span></div>
       </div>
       <pre id="status-box" class="mono">Loading…</pre>
     </section>
 
     <section class="card">
-      <h2>Live prices (Binance)</h2>
-      <div id="prices" class="prices">—</div>
+      <h2>Live prices (tự cập nhật)</h2>
+      <div id="prices" class="prices">Đang tải…</div>
+      <p class="muted" id="price-src"></p>
     </section>
 
     <section class="card">
@@ -49,27 +61,42 @@
     </section>
 
     <section class="card">
+      <h2>Live activity</h2>
+      <pre id="activity-box" class="mono">—</pre>
+    </section>
+
+    <section class="card">
+      <h2>Recent trades (paper ledger)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Sym</th><th>Side</th><th>Size</th><th>Edge</th><th>Mode</th></tr>
+          </thead>
+          <tbody id="trades-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
       <h2>Notify test</h2>
-      <textarea id="notify-text" rows="3" placeholder="Nội dung test Telegram / WhatsApp…">Bot online — Trade-coin-2026</textarea>
+      <textarea id="notify-text" rows="3">Bot online — Trade-coin-2026</textarea>
       <div class="row">
-        <button id="btn-tg" class="btn">Send Telegram</button>
-        <button id="btn-wa" class="btn">Send WhatsApp</button>
-        <button id="btn-both" class="btn primary">Send both</button>
+        <button id="btn-tg" class="btn">Telegram</button>
+        <button id="btn-wa" class="btn">WhatsApp</button>
+        <button id="btn-both" class="btn primary">Both</button>
       </div>
       <pre id="notify-result" class="mono"></pre>
     </section>
 
     <section class="card wide">
-      <h2>Pipeline</h2>
+      <h2>Cách dùng (không PowerShell)</h2>
       <ol class="steps">
-        <li>Multi-exchange feeds (Binance + Coinbase + Bybit)</li>
-        <li>Orderbook depth proxy + OTC overlay</li>
-        <li>SMC structure (BOS/CHoCH/stop-hunt)</li>
-        <li>Monte Carlo 10,000 paths + MiroFish graph</li>
-        <li>Edge ≥ 5% → half-Kelly × Bayesian size</li>
-        <li>Paper / Binance / MEXC execution + Telegram & WhatsApp</li>
+        <li>Chạy 1 lần: <code>python -m crypto_edge.cli web</code></li>
+        <li>Mở <code>http://127.0.0.1:8080</code> — bot + data tự chạy</li>
+        <li>Dashboard tự refresh 5s: giá, signal, activity, trades</li>
+        <li>Cooldown <code>.env</code>: AUTO_START_BOT=true, TRADE_COOLDOWN_SEC=300</li>
       </ol>
-      <p class="muted">Paper mặc định. Live cần MODE=live + LIVE_CONFIRM=true + API keys. Không phải lời khuyên tài chính.</p>
+      <p class="muted">Paper mặc định. Live: MODE=live + LIVE_CONFIRM=true + API keys. Không phải lời khuyên tài chính.</p>
     </section>
   </main>
 

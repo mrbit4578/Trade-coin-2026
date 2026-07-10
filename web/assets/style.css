@@ -1,0 +1,143 @@
+:root {
+  --bg: #070b14;
+  --card: #101827;
+  --line: #243047;
+  --text: #e8eefc;
+  --muted: #8fa0bc;
+  --good: #22c55e;
+  --warn: #f59e0b;
+  --blue: #3b82f6;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(900px 420px at 0% -10%, #1a2d55 0%, transparent 55%),
+    radial-gradient(700px 380px at 100% 0%, #123528 0%, transparent 50%),
+    var(--bg);
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--line);
+}
+h1 { margin: 0; font-size: 1.35rem; }
+.sub { margin: .25rem 0 0; color: var(--muted); font-size: .9rem; }
+.badges { display: flex; gap: .45rem; flex-wrap: wrap; }
+.badge {
+  border: 1px solid var(--line);
+  background: #152038;
+  border-radius: 999px;
+  padding: .28rem .7rem;
+  font-size: .78rem;
+}
+.badge.on { color: var(--good); border-color: #166534; }
+.banner {
+  margin: .85rem 1.4rem 0;
+  padding: .7rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #1d4ed8;
+  background: linear-gradient(90deg, #122a55, #0d1526);
+  color: #cfe0ff;
+  font-size: .9rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem 1.4rem 2rem;
+}
+.card {
+  background: linear-gradient(180deg, #152038, var(--card));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 12px 28px rgba(0,0,0,.28);
+}
+.card.wide { grid-column: 1 / -1; }
+.card h2 { margin: 0 0 .55rem; font-size: 1rem; color: #d4e1f8; }
+.row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.row.between { justify-content: space-between; }
+.btn {
+  border: 1px solid var(--line);
+  background: #1a2742;
+  color: var(--text);
+  border-radius: 10px;
+  padding: .5rem .85rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn.primary { background: #1d4ed8; border-color: #2563eb; }
+.toggle { color: var(--muted); font-size: .85rem; display: flex; gap: .35rem; align-items: center; }
+.prices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: .55rem;
+}
+.price-chip {
+  background: #0b1220;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: .7rem .75rem;
+}
+.price-chip b { display: block; color: #9fb4d9; font-size: .75rem; letter-spacing: .04em; }
+.price-chip .px { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.price-chip .chg { font-size: .8rem; margin-top: .2rem; }
+.chg.up { color: var(--good); }
+.chg.down { color: #f87171; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .45rem;
+  margin: .5rem 0 .75rem;
+}
+.stat {
+  background: #0b1220;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .45rem .55rem;
+}
+.stat b { display: block; color: var(--muted); font-size: .7rem; }
+.stat span { font-weight: 700; font-size: .92rem; }
+.table-wrap { overflow: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+th, td { text-align: left; padding: .42rem .3rem; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); }
+.enter { color: var(--good); font-weight: 700; }
+.skip { color: var(--warn); }
+.mono {
+  background: #080d18;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .7rem;
+  max-height: 220px;
+  overflow: auto;
+  font-size: .78rem;
+  white-space: pre-wrap;
+  line-height: 1.45;
+}
+.steps { margin: 0; padding-left: 1.15rem; line-height: 1.65; color: #d5e0f7; }
+.muted { color: var(--muted); font-size: .85rem; }
+code {
+  background: #0b1220;
+  padding: .08rem .35rem;
+  border-radius: 6px;
+  font-size: .85em;
+}
+.foot {
+  text-align: center;
+  color: var(--muted);
+  padding: 0 1rem 1.5rem;
+  font-size: .85rem;
+}
+.foot a { color: #93c5fd; }
+@media (max-width: 640px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+}

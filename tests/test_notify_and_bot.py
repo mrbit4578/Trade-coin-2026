@@ -20,4 +20,5 @@ def test_settings_web_defaults():
     s = Settings()
     assert s.web_port == 8080
     assert s.whatsapp_provider == "none"
-    assert s.auto_start_bot is False
+    assert s.auto_start_bot is True
+    assert s.trade_cooldown_sec >= 0
