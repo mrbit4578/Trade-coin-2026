@@ -1,22 +1,22 @@
 {
-  "updated_at": "2026-07-17T10:48:13.435243+00:00",
+  "updated_at": "2026-07-17T12:10:36.003822+00:00",
   "mode": "paper-cloud",
   "venue": "paper",
   "mc_simulations": 1500,
   "prices": {
-    "BTC": 63116.33,
-    "ETH": 1836.6,
-    "SOL": 74.79,
-    "BNB": 563.78,
-    "DOGE": 0.07198,
-    "NEAR": 1.916
+    "BTC": 63210.97,
+    "ETH": 1835.24,
+    "SOL": 74.64,
+    "BNB": 563.88,
+    "DOGE": 0.07185,
+    "NEAR": 1.917
   },
   "signals": [
     {
       "action": "SKIP",
       "symbol": "BTC",
       "side": "BUY",
-      "edge": 0.0761,
+      "edge": 0.1015,
       "size_usd": 0.0,
       "skip_reason": "thin liquidity $0",
       "question": "spot BTC/USDT"
@@ -25,7 +25,7 @@
       "action": "SKIP",
       "symbol": "ETH",
       "side": "BUY",
-      "edge": 0.0968,
+      "edge": 0.0889,
       "size_usd": 0.0,
       "skip_reason": "thin liquidity $0",
       "question": "spot ETH/USDT"
@@ -33,8 +33,8 @@
     {
       "action": "SKIP",
       "symbol": "SOL",
-      "side": "BUY",
-      "edge": 0.1224,
+      "side": "SELL",
+      "edge": 0.2117,
       "size_usd": 0.0,
       "skip_reason": "thin liquidity $0",
       "question": "spot SOL/USDT"
@@ -43,7 +43,7 @@
       "action": "SKIP",
       "symbol": "BNB",
       "side": "BUY",
-      "edge": 0.1218,
+      "edge": 0.1035,
       "size_usd": 0.0,
       "skip_reason": "thin liquidity $0",
       "question": "spot BNB/USDT"
@@ -52,7 +52,7 @@
       "action": "SKIP",
       "symbol": "DOGE",
       "side": "BUY",
-      "edge": 0.0905,
+      "edge": 0.0795,
       "size_usd": 0.0,
       "skip_reason": "thin liquidity $0",
       "question": "spot DOGE/USDT"
@@ -61,7 +61,7 @@
       "action": "SKIP",
       "symbol": "NEAR",
       "side": "BUY",
-      "edge": 0.1012,
+      "edge": 0.0847,
       "size_usd": 0.0,
       "skip_reason": "thin liquidity $0",
       "question": "spot NEAR/USDT"
