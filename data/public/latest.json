@@ -1,73 +1,55 @@
 {
-  "updated_at": "2026-08-25T11:57:30.859928+00:00",
+  "updated_at": "2026-08-25T12:58:20.222833+00:00",
   "mode": "paper-cloud",
   "venue": "paper",
   "mc_simulations": 1500,
   "prices": {
-    "BTC": 79136.91,
-    "ETH": 2478.72,
-    "SOL": 98.69,
-    "BNB": 696.9,
-    "DOGE": 0.09022,
-    "NEAR": 1.9214
+    "BTC": 79006.51,
+    "ETH": 2473.90666667,
+    "SOL": 98.64333333,
+    "BNB": 697.89,
+    "DOGE": 0.09018667,
+    "NEAR": 1.93356667
   },
   "signals": [
     {
-      "action": "SKIP",
+      "action": "ENTER",
       "symbol": "BTC",
-      "side": "BUY",
-      "edge": 0.0888,
-      "size_usd": 0.0,
-      "skip_reason": "thin liquidity $0",
+      "side": "SELL",
+      "edge": 0.0687,
+      "size_usd": 25.13,
+      "skip_reason": "",
       "question": "spot BTC/USDT"
     },
     {
-      "action": "SKIP",
+      "action": "ENTER",
       "symbol": "ETH",
-      "side": "BUY",
-      "edge": 0.0833,
-      "size_usd": 0.0,
-      "skip_reason": "thin liquidity $0",
+      "side": "SELL",
+      "edge": 0.1924,
+      "size_usd": 30.99,
+      "skip_reason": "",
       "question": "spot ETH/USDT"
     },
     {
-      "action": "SKIP",
+      "action": "ENTER",
       "symbol": "SOL",
       "side": "BUY",
-      "edge": 0.0883,
-      "size_usd": 0.0,
-      "skip_reason": "thin liquidity $0",
+      "edge": 0.0819,
+      "size_usd": 28.18,
+      "skip_reason": "",
       "question": "spot SOL/USDT"
     },
     {
-      "action": "SKIP",
-      "symbol": "BNB",
-      "side": "BUY",
-      "edge": 0.0907,
-      "size_usd": 0.0,
-      "skip_reason": "thin liquidity $0",
-      "question": "spot BNB/USDT"
-    },
-    {
-      "action": "SKIP",
+      "action": "ENTER",
       "symbol": "DOGE",
       "side": "BUY",
-      "edge": 0.088,
-      "size_usd": 0.0,
-      "skip_reason": "thin liquidity $0",
+      "edge": 0.1653,
+      "size_usd": 30.99,
+      "skip_reason": "",
       "question": "spot DOGE/USDT"
-    },
-    {
-      "action": "SKIP",
-      "symbol": "NEAR",
-      "side": "BUY",
-      "edge": 0.0942,
-      "size_usd": 0.0,
-      "skip_reason": "thin liquidity $0",
-      "question": "spot NEAR/USDT"
     }
   ],
-  "enter_count": 0,
+  "enter_count": 4,
   "cycles": 1,
   "source": "github-actions"
 }
